@@ -1,0 +1,54 @@
+group 'JavaCommit'
+version '0.0.1'
+
+apply plugin: 'java'
+apply plugin: 'checkstyle'
+apply plugin: 'jacoco'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    checkstyleToolVersion = '8.3'
+    jacocoToolVersion = '0.7.9'
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.springframework', name: 'spring-core', version: '4.3.11.RELEASE'
+    compile group: 'org.springframework', name: 'spring-beans', version: '4.3.11.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context', version: '4.3.11.RELEASE'
+
+}
+
+checkstyle {
+    toolVersion = checkstyleToolVersion
+    config = rootProject.resources.text.fromFile('etc/checkstyle/checkstyle.xml')
+}
+
+jacoco {
+    toolVersion = jacocoToolVersion
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled = true
+        xml.enabled = true
+    }
+}
+
+test.finalizedBy jacocoTestReport
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'de.java.commit.Main'
+        )
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
