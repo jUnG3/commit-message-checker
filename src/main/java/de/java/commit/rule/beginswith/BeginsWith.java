@@ -34,12 +34,11 @@ public class BeginsWith implements CommitRule {
     public void run() {
         Pattern pattern = Pattern.compile(this.regex);
 
-        if (pattern.matcher(this.message.get(0)).find()) {
-            return;
+        if (!pattern.matcher(this.message.get(0)).find()) {
+            throw new RuntimeException(
+                "The message " + this.message.get(0) + " does not match the given pattern "
+                    + this.regex);
         }
-        throw new RuntimeException(
-            "The message " + this.message.get(0) + " does not match the given pattern "
-                + this.regex);
     }
 
     @Override
