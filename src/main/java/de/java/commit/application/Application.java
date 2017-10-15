@@ -16,52 +16,27 @@ public class Application implements Runnable {
     /**
      * Commit rules map.
      */
-    private Map<String, CommitRule> commitRulesMap;
-
-    /**
-     * Configuration object.
-     */
-    private List<String> activePlugins;
+    private List<CommitRule> commitRules;
 
     /**
      * Application constructor.
      *
      * @param fileContent File content
-     * @param commitRulesMap Commit rules map
-     * @param configuration Configuration object
+     * @param commitRules Commit rules map
      */
     public Application(
         List<String> fileContent,
-        Map<String, CommitRule> commitRulesMap,
-        Configurable configuration
+        List<CommitRule> commitRules
     ) {
         this.fileContent = fileContent;
-        this.commitRulesMap = commitRulesMap;
-        this.activePlugins = configuration.getActivePlugins();
+        this.commitRules = commitRules;
     }
 
     /**
      * Runs the application.
      */
     public void run() {
-        this.commitRulesMap.entrySet().stream().filter(this::filterCommitRules)
-            .forEach(this::setFileContentAndRunPlugins);
-    }
-
-    /**
-     * Returns true if commit rule key is in the active plugins list.
-     */
-    private boolean filterCommitRules(Entry<String, CommitRule> ruleEntry) {
-        return this.activePlugins.contains(ruleEntry.getKey());
-    }
-
-    /**
-     * Sets file content to plugin and runs the plugin.
-     *
-     * @param ruleEntry Plugin object
-     */
-    private void setFileContentAndRunPlugins(Entry<String, CommitRule> ruleEntry) {
-        ruleEntry.getValue().setMessage(this.fileContent);
-        ruleEntry.getValue().run();
+        this.commitRules.forEach(commitRule -> commitRule.setMessage(this.fileContent));
+        this.commitRules.forEach(Runnable::run);
     }
 }
