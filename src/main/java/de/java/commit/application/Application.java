@@ -1,10 +1,7 @@
 package de.java.commit.application;
 
-import de.java.commit.configration.Configurable;
 import de.java.commit.rule.CommitRule;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 public class Application implements Runnable {
 
