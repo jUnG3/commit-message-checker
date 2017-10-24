@@ -8,6 +8,8 @@ import de.java.commit.rule.linecounter.exceptions.HeaderLineLessThanZeroExceptio
 import de.java.commit.rule.linecounter.exceptions.HeaderLineZeroException;
 import de.java.commit.rule.linecounter.exceptions.MaxLinesIsZeroException;
 import de.java.commit.rule.linecounter.exceptions.MaxLinesLessThanZeroException;
+import de.java.commit.rule.linecounter.exceptions.MessageGreaterThanMaxLinesException;
+import de.java.commit.rule.linecounter.exceptions.MessageSmallerThanMinLines;
 import de.java.commit.rule.linecounter.exceptions.MinLinesGreaterThanMaxLinesException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
@@ -86,6 +88,16 @@ public class LineCounter implements CommitRule {
     @Override
     public void run() {
         this.checkConfiguration();
+
+        int messageSize = this.message.size();
+
+        if (messageSize > this.maxLines) {
+            throw new MessageGreaterThanMaxLinesException(messageSize, this.maxLines);
+        }
+
+        if (messageSize < this.minLines) {
+            throw new MessageSmallerThanMinLines(messageSize, this.minLines);
+        }
     }
 
     /**
