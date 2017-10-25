@@ -4,6 +4,7 @@ import de.java.commit.rule.CommitRule;
 import de.java.commit.rule.linecounter.exceptions.ContentLineLessThanZeroException;
 import de.java.commit.rule.linecounter.exceptions.ContentLineZeroException;
 import de.java.commit.rule.linecounter.exceptions.HeaderLineLessThanZeroException;
+import de.java.commit.rule.linecounter.exceptions.HeaderLineToLargeException;
 import de.java.commit.rule.linecounter.exceptions.HeaderLineZeroException;
 import de.java.commit.rule.linecounter.exceptions.MaxLinesIsZeroException;
 import de.java.commit.rule.linecounter.exceptions.MaxLinesLessThanZeroException;
@@ -94,6 +95,13 @@ public class LineCounterTest {
     @Test(expected = MessageSmallerThanMinLines.class)
     public void run_lessLinesThanRequired_throwsException() {
         CommitRule lineCounter = new LineCounter(6, 4, 32, 64, 0, 2);
+        lineCounter.setMessage(this.message);
+        lineCounter.run();
+    }
+
+    @Test(expected = HeaderLineToLargeException.class)
+    public void run_headerLineToLargeException_throwsException() {
+        CommitRule lineCounter = new LineCounter(3, 1, 12, 64, 0, 2);
         lineCounter.setMessage(this.message);
         lineCounter.run();
     }
