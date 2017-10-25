@@ -5,6 +5,7 @@ import de.java.commit.rule.annotation.Rule;
 import de.java.commit.rule.linecounter.exceptions.ContentLineLessThanZeroException;
 import de.java.commit.rule.linecounter.exceptions.ContentLineZeroException;
 import de.java.commit.rule.linecounter.exceptions.HeaderLineLessThanZeroException;
+import de.java.commit.rule.linecounter.exceptions.HeaderLineNoContentException;
 import de.java.commit.rule.linecounter.exceptions.HeaderLineToLargeException;
 import de.java.commit.rule.linecounter.exceptions.HeaderLineZeroException;
 import de.java.commit.rule.linecounter.exceptions.MaxLinesIsZeroException;
@@ -105,6 +106,10 @@ public class LineCounter implements CommitRule {
                 this.headerLineLength,
                 this.message.get(this.headerLineIndex).length()
             );
+        }
+
+        if (this.message.get(this.headerLineIndex).length() == 0) {
+            throw new HeaderLineNoContentException();
         }
     }
 
