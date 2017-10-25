@@ -23,6 +23,9 @@ public class LineCounterTest {
 
     private List<String> message;
 
+    /**
+     * Sets up message.
+     */
     @Before
     public void setupMessage() {
         this.message = new ArrayList<>();
