@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+CMC_RESULT="$(java -jar build/libs/commit-message-checker-*.jar "$1")"
+
+if [ "$CMC_RESULT" == "Success" ]; then
+  exit 0
+else
+  echo "$CMC_RESULT"
+  exit 1
+fi
