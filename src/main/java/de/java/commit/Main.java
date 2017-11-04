@@ -15,8 +15,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
 @PropertySources({
-    @PropertySource("classpath:default.properties"),
-    //@PropertySource("file:${APP_PROPERTIES}")
+    @PropertySource("classpath:default.properties")
 })
 @ComponentScan
 public class Main {
